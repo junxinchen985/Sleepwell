@@ -1,4 +1,8 @@
 <view class="page-shell breathe-page world-bg--{{previewWorld || settings.world}}">
+  <view wx:if="{{(previewWorld || settings.world) === 'stardust'}}" class="starfield-page-background" style="{{starfieldStyle}}" aria-label="星空海">
+    <image class="starfield-frame" src="/assets/animation/starfield-figma-a.png" mode="aspectFit"></image>
+    <image class="starfield-frame starfield-frame--blend" src="/assets/animation/starfield-figma-b.png" mode="aspectFit"></image>
+  </view>
   <view class="topbar" style="{{nav.topbarStyle}}">
     <view class="topbar-leading">
       <button class="icon-button icon-button--exit" bindtap="exitMiniProgram" aria-label="退出小程序">
@@ -51,7 +55,7 @@
     catchtouchcancel="handlePressCancel"
     aria-label="按住吸气，松开呼气"
   >
-    <world-visual world="{{previewWorld || settings.world}}" phase="{{phase}}" cycles="{{cycles}}" target-cycles="{{settings.targetCycles}}"></world-visual>
+    <world-visual wx:if="{{(previewWorld || settings.world) !== 'stardust'}}" world="{{previewWorld || settings.world}}" phase="{{phase}}" cycles="{{cycles}}" target-cycles="{{settings.targetCycles}}"></world-visual>
     <view class="breath-orb breath-orb--{{phase}}">
       <view class="breath-orb__halo breath-orb__halo--outer"></view>
       <view class="breath-orb__halo breath-orb__halo--inner"></view>

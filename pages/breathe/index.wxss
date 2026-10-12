@@ -8,6 +8,25 @@
 .world-bg--moon { --world-accent: #efe8c8; }
 .world-bg--water { --world-accent: #a9d2ce; }
 .world-bg--stardust { --world-accent: #d6d8c8; }
+.breathe-page.world-bg--stardust { background: #030b13; }
+.starfield-page-background {
+  position: absolute;
+  z-index: 0;
+  pointer-events: none;
+}
+.starfield-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.starfield-frame--blend { animation: starfieldBlend 10s ease-in-out infinite; }
+@keyframes starfieldBlend {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+.world-bg--stardust .touch-ring { display: none; }
 .world-bg--firefly { --world-accent: #dce89b; }
 .world-bg--warmLight { --world-accent: #f2c99f; }
 .world-bg--orb { --world-accent: #c6e0d4; }

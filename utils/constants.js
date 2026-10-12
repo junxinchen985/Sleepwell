@@ -3,7 +3,7 @@ const WORLDS = [
   { id: 'mist', name: '雾气', glyph: '≋', accent: '#c9ded9' },
   { id: 'moon', name: '月光', glyph: '◐', accent: '#efe8c8' },
   { id: 'water', name: '湖面', glyph: '⌁', accent: '#a9d2ce' },
-  { id: 'stardust', name: '星尘', glyph: '✦', accent: '#d6d8c8' },
+  { id: 'stardust', name: '星空海', glyph: '✦', accent: '#d6d8c8' },
   { id: 'firefly', name: '萤火虫', glyph: '·', accent: '#dce89b' },
   { id: 'warmLight', name: '暖光', glyph: '☼', accent: '#f2c99f' },
   { id: 'orb', name: '呼吸光团', glyph: '●', accent: '#c6e0d4' }

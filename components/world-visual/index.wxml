@@ -69,13 +69,12 @@
   </block>
 
   <block wx:elif="{{world === 'stardust'}}">
-    <view class="star-core"></view>
-    <view
-      wx:for="{{particles}}"
-      wx:key="id"
-      class="star"
-      style="left: {{item.x}}%; top: {{item.y}}%; width: {{item.size + 2}}rpx; height: {{item.size + 2}}rpx; animation-delay: -{{item.delay}}s;"
-    ></view>
+    <image
+      class="starfield-animation"
+      src="/assets/animation/starfield-figma-a.png"
+      mode="aspectFit"
+      aria-label="星空呼吸动画"
+    ></image>
   </block>
 
   <block wx:elif="{{world === 'firefly'}}">

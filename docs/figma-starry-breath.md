@@ -6,11 +6,17 @@
 - Canvas: 390 x 844 pixels.
 - Intended rhythm: inhale for 4 seconds, hold for 7 seconds, exhale for 8 seconds.
 
-The animation blends two starfield textures and changes the breathing glow.
-This commit provides the design reference and GIF asset; it does not change
-the mini-program page implementation. The editable Figma document is hosted
-on Figma and is not included as a `.fig` export.
+The breathing page now uses two complete PNG frames exported from Figma,
+`starfield-figma-a.png` and `starfield-figma-b.png`, with a 10-second CSS blend.
+The former Stardust entry is named Starfield Sea, retaining the `stardust`
+identifier for saved preferences. Existing prompts and the yellow breathing
+control remain; the blue glow from the earlier GIF is no longer displayed.
 
-The current GIF is a low-frame-rate design preview (3 fps). Production use
-should implement continuous animation and synchronize the page controls with
-the breathing state machine.
+The background uses actual window dimensions to contain the complete 390 x
+844 composition without cropping or stretching, including after resize.
+Different screen ratios may show dark margins. Background transitions run
+independently of the breathing state machine. The GIF above is an earlier
+preview, no longer referenced by the breathing page.
+
+Validation: JavaScript syntax and Node tests. WeChat Skyline simulator and
+physical-device playback still require visual verification.

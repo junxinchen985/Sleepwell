@@ -4,6 +4,7 @@ const navigation = require('../../utils/navigation');
 const { PHASES, createInitialState, transition } = require('../../utils/breath-machine');
 const { getBreathView } = require('../../utils/breath-view');
 const { getNavigationMetrics } = require('../../utils/layout');
+const { fitStarfield } = require('../../utils/starfield-layout');
 
 const CYCLE_OPTIONS = [
   { value: 0, name: '自由呼吸' },
@@ -45,6 +46,7 @@ Page({
     countdown: 0,
     phaseLabel: '',
     nav: getNavigationMetrics(),
+    starfieldStyle: '',
     showRecords: false,
     previewWorld: '',
     recentSessions: [],
@@ -53,6 +55,7 @@ Page({
   },
 
   onLoad() {
+    this.updateStarfieldLayout();
     this.sessionId = `breath-${Date.now()}`;
     this.hasNudged = false;
     this.countdownTimer = null;
@@ -61,9 +64,19 @@ Page({
   },
 
   onShow() {
+    this.updateStarfieldLayout();
     this.setData({ nav: getNavigationMetrics() });
     this.syncSettings();
     wx.showShareMenu({ menus: ['shareAppMessage', 'shareTimeline'] });
+  },
+
+  onResize(event) {
+    this.updateStarfieldLayout(event.size);
+  },
+
+  updateStarfieldLayout(size) {
+    const info = size || (wx.getWindowInfo ? wx.getWindowInfo() : wx.getSystemInfoSync());
+    this.setData({ starfieldStyle: fitStarfield(info.windowWidth, info.windowHeight) });
   },
 
   onShareAppMessage() {
