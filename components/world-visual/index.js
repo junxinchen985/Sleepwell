@@ -45,6 +45,10 @@ Component({
     ripples: [0, 1, 2],
     partPosition: { x: 50, y: 44 },
     useCanvas: false,
+    moonlitCanvasReady: false,
+    moonlitFrames: Array.from({ length: 8 }, (_, id) => ({
+      id, src: `/assets/moonlit/lake-${id}.jpg`, opacity: id === 0 ? 1 : 0
+    })),
     fallbackFilaments: createFallbackFilaments(72),
     fallbackSeeds: createFallbackSeeds(18),
     photoSeeds: createPhotoSeeds()
@@ -56,20 +60,56 @@ Component({
       // canvas renderer available for experimentation, but use the asset layer
       // in the shipped experience so the fine backlit filaments remain intact.
       this.setData({ useCanvas: false });
+      this.moonlitMounted = true;
+      if (this.data.world === 'mist') {
+        this.startMoonlitFallback();
+        this.initMoonlitCanvas();
+      }
     },
-    detached() { this.stopDandelionCanvas(); }
+    detached() {
+      this.moonlitMounted = false;
+      this.stopMoonlitCanvas();
+      this.stopDandelionCanvas();
+    }
   },
 
   pageLifetimes: {
-    hide() { this.pauseDandelionCanvas(); },
+    resize() {
+      if (this.data.world !== 'mist') return;
+      this.stopMoonlitCanvas();
+      wx.nextTick(() => {
+        this.startMoonlitFallback();
+        this.initMoonlitCanvas();
+      });
+    },
+    hide() {
+      this.moonlitHidden = true;
+      this.pauseMoonlitFallback();
+      this.pauseMoonlitCanvas();
+      this.pauseDandelionCanvas();
+    },
     show() {
+      this.moonlitHidden = false;
       this.phaseChangedAt = Date.now();
       this.lastFrameAt = Date.now();
       if (this.data.useCanvas && this.data.world === 'dandelion') this.startDandelionCanvas();
+      if (this.data.world === 'mist') {
+        this.startMoonlitFallback();
+        if (this.moonlitCanvas) this.startMoonlitCanvas();
+        else this.initMoonlitCanvas();
+      }
     }
   },
 
   observers: {
+    world(world) {
+      if (world === 'mist') wx.nextTick(() => {
+        if (!this.moonlitMounted) return;
+        this.startMoonlitFallback();
+        this.initMoonlitCanvas();
+      });
+      else this.stopMoonlitCanvas();
+    },
     'phase, world, cycles, targetCycles'() {
       const phase = this.data.phase;
       this.phaseChangedAt = Date.now();
@@ -91,6 +131,105 @@ Component({
   },
 
   methods: {
+    startMoonlitFallback() {
+      if (!this.moonlitMounted || this.moonlitHidden || this.moonlitTimer != null || this.data.world !== 'mist' || this.data.moonlitCanvasReady) return;
+      const started = Date.now();
+      // Independent image playback also works when Canvas initialization fails.
+      this.moonlitTimer = setInterval(() => {
+        const position = ((Date.now() - started) % 6400) / 800;
+        const current = Math.floor(position);
+        const next = (current + 1) % 8;
+        const blend = position - current;
+        const frames = this.data.moonlitFrames.map((frame) => ({
+          ...frame,
+          opacity: frame.id === current ? (next < current ? 1 - blend : 1) : frame.id === next ? (next < current ? 1 : blend) : 0
+        }));
+        this.setData({ moonlitFrames: frames });
+      }, 66);
+    },
+
+    pauseMoonlitFallback() {
+      if (this.moonlitTimer != null) clearInterval(this.moonlitTimer);
+      this.moonlitTimer = null;
+    },
+
+    initMoonlitCanvas() {
+      if (!this.moonlitMounted || this.moonlitHidden || this.moonlitCanvas || this.moonlitInitializing) return;
+      this.moonlitInitializing = true;
+      this.createSelectorQuery().select('#moonlitCanvas').fields({ node: true, size: true }).exec((results) => {
+        this.moonlitInitializing = false;
+        const result = results && results[0];
+        if (!this.moonlitMounted || !result || !result.node || !result.width || !result.height || this.data.world !== 'mist') return;
+        const canvas = result.node;
+        const dpr = Math.min(3, (wx.getWindowInfo ? wx.getWindowInfo().pixelRatio : 2) || 2);
+        canvas.width = Math.round(result.width * dpr);
+        canvas.height = Math.round(result.height * dpr);
+        this.moonlitCanvas = canvas;
+        this.moonlitSize = { width: result.width, height: result.height, dpr };
+        this.moonlitImages = [];
+        let loaded = 0;
+        for (let index = 0; index < 8; index++) {
+          const image = canvas.createImage();
+          image.onload = () => {
+            if (this.moonlitCanvas !== canvas) return;
+            this.moonlitImages[index] = image;
+            loaded++;
+            if (loaded === 8) this.startMoonlitCanvas();
+          };
+          image.onerror = () => {
+            if (this.moonlitCanvas !== canvas) return;
+            this.stopMoonlitCanvas();
+            this.startMoonlitFallback();
+          };
+          image.src = `/assets/moonlit/lake-${index}.jpg`;
+        }
+      });
+    },
+
+    startMoonlitCanvas() {
+      if (this.moonlitHidden || !this.moonlitCanvas || this.moonlitRequest != null || this.moonlitImages.filter(Boolean).length !== 8) return;
+      const canvas = this.moonlitCanvas;
+      const ctx = canvas.getContext('2d');
+      const { width, height, dpr } = this.moonlitSize;
+      // Cover preserves the lake's proportions on every viewport without bars.
+      const scale = Math.max(width / 390, height / 844);
+      const drawWidth = 390 * scale;
+      const drawHeight = 844 * scale;
+      const x = (width - drawWidth) / 2;
+      const y = (height - drawHeight) / 2;
+      const started = Date.now();
+      const draw = () => {
+        if (this.moonlitCanvas !== canvas || this.data.world !== 'mist') return;
+        const position = ((Date.now() - started) % 6400) / 800;
+        const index = Math.floor(position);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.globalAlpha = 1;
+        ctx.drawImage(this.moonlitImages[index], x, y, drawWidth, drawHeight);
+        ctx.globalAlpha = position - index;
+        ctx.drawImage(this.moonlitImages[(index + 1) % 8], x, y, drawWidth, drawHeight);
+        ctx.globalAlpha = 1;
+        if (!this.data.moonlitCanvasReady) {
+          this.setData({ moonlitCanvasReady: true });
+          this.pauseMoonlitFallback();
+        }
+        this.moonlitRequest = canvas.requestAnimationFrame(draw);
+      };
+      this.moonlitRequest = canvas.requestAnimationFrame(draw);
+    },
+
+    pauseMoonlitCanvas() {
+      if (this.moonlitCanvas && this.moonlitRequest != null) this.moonlitCanvas.cancelAnimationFrame(this.moonlitRequest);
+      this.moonlitRequest = null;
+    },
+
+    stopMoonlitCanvas() {
+      this.pauseMoonlitFallback();
+      this.pauseMoonlitCanvas();
+      this.moonlitCanvas = null;
+      this.moonlitImages = [];
+      if (this.moonlitMounted) this.setData({ moonlitCanvasReady: false });
+    },
+
     initDandelionCanvas() {
       if (this.initializingCanvas) return;
       this.initializingCanvas = true;

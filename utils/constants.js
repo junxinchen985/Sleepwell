@@ -1,6 +1,6 @@
 const WORLDS = [
   { id: 'dandelion', name: '蒲公英', glyph: '✣', accent: '#d8e8cf' },
-  { id: 'mist', name: '雾气', glyph: '≋', accent: '#c9ded9' },
+  { id: 'mist', name: '月光涟漪', glyph: '≋', accent: '#c9ded9' },
   { id: 'moon', name: '月光', glyph: '◐', accent: '#efe8c8' },
   { id: 'water', name: '湖面', glyph: '⌁', accent: '#a9d2ce' },
   { id: 'stardust', name: '星空海', glyph: '✦', accent: '#d6d8c8' },

@@ -51,9 +51,8 @@
   </block>
 
   <block wx:elif="{{world === 'mist'}}">
-    <view class="mist-cloud mist-cloud--one"></view>
-    <view class="mist-cloud mist-cloud--two"></view>
-    <view class="mist-cloud mist-cloud--three"></view>
+    <image wx:for="{{moonlitFrames}}" wx:key="id" class="moonlit-surface" src="{{item.src}}" mode="aspectFill" style="opacity: {{item.opacity}};"></image>
+    <canvas type="2d" id="moonlitCanvas" class="moonlit-surface" style="opacity: {{moonlitCanvasReady ? 1 : 0}};" aria-label="月光涟漪"></canvas>
   </block>
 
   <block wx:elif="{{world === 'moon'}}">
