@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "disableScroll": true,
+  "backgroundColor": "#0D0D0D",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {
+    "immersive-chrome": "/components/immersive-chrome/index",
+    "breathing-action-button": "/components/breathing-action-button/index"
+  }
+}

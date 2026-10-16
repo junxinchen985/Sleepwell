@@ -1,0 +1,61 @@
+<!--
+  深海鲸鱼 4-7-8 呼吸页
+  ---------------------------------------------------------------------------
+  页面挂载共享沉浸控件，场景动画由 CSS transition/animation 驱动。
+-->
+<view class="whale-page whale-page--{{phase}} {{running ? 'is-running' : 'is-idle'}}">
+  <view class="whale-art-stage" aria-hidden="true">
+    <image class="whale-water" src="/assets/whale/deep-sea-water-base-hd.jpg" mode="scaleToFill"></image>
+    <view class="whale-swimmer-frame">
+      <view class="whale-phase-motion" style="{{scene.photoStyle}}">
+        <view class="whale-swim-cycle">
+          <image class="whale-whale" src="/assets/whale/whale-full-glow.png" mode="scaleToFill"></image>
+          <image class="whale-fin" src="/assets/whale/whale-fin-glow.png" mode="scaleToFill"></image>
+          <image class="whale-tail" src="/assets/whale/whale-tail-glow.png" mode="scaleToFill"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="whale-water-caustics" style="{{scene.rippleStyle}}" aria-hidden="true"></view>
+  <view class="whale-atmosphere" aria-hidden="true"></view>
+
+  <view class="whale-rays" style="{{scene.raysStyle}}" aria-hidden="true">
+    <view
+      wx:for="{{beams}}"
+      wx:key="id"
+      class="whale-beam"
+      style="left:{{item.left}}%;width:{{item.width}}%;"
+    >
+      <view
+        class="whale-beam__body"
+        style="transform:rotate({{item.rotate}}deg);animation-duration:{{item.duration}}s;animation-delay:{{item.delay}}s;"
+      ></view>
+    </view>
+  </view>
+
+  <view class="whale-ripples" style="{{scene.rippleStyle}}" aria-hidden="true">
+    <view
+      wx:for="{{ripples}}"
+      wx:key="id"
+      class="whale-ripple"
+      style="width:{{item.width}}rpx;height:{{item.height}}rpx;animation-delay:{{item.delay}}s;"
+    ></view>
+  </view>
+
+  <view class="whale-bubbles" style="{{scene.bubbleStyle}}" aria-hidden="true">
+    <view
+      wx:for="{{bubbles}}"
+      wx:key="id"
+      class="whale-bubble whale-bubble--{{item.variant}}"
+      style="left:{{item.left}}%;top:{{item.top}}%;width:{{item.size}}rpx;height:{{item.size}}rpx;animation-delay:{{item.delay}}s;animation-duration:{{item.duration}}s;"
+    ></view>
+  </view>
+
+  <view class="whale-vignette" aria-hidden="true"></view>
+
+  <immersive-chrome></immersive-chrome>
+  <view class="breathing-control-anchor">
+    <breathing-action-button active="{{running}}" bind:toggle="handleToggle"></breathing-action-button>
+  </view>
+</view>

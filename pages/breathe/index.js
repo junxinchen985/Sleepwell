@@ -187,6 +187,19 @@ Page({
     this.dispatch({ type: 'PRESS_END', now: Date.now() });
   },
   handlePressCancel() { this.handlePressEnd(); },
+
+  handleBreathingControl() {
+    const active = [PHASES.INHALE, PHASES.HOLD, PHASES.EXHALE].includes(this.machine.phase);
+    if (!active) {
+      this.handlePressStart();
+      return;
+    }
+
+    this.dispatch({ type: 'STOP', now: Date.now() });
+    this.restartSession(this.data.settings.targetCycles);
+    this.setData({ showCompletion: false, showOutcome: false });
+  },
+
   stopBreathing() {
     this.dispatch({ type: 'STOP', now: Date.now() });
     this.setData({ showCompletion: true, showOutcome: true });
@@ -275,6 +288,9 @@ Page({
     const currentWorld = WORLDS.find((item) => item.id === world) || WORLDS[0];
     this.setData({ settings, currentWorld, showWorldPicker: false, previewWorld: '' });
     this.gentleHaptic();
+    if (currentWorld.page) {
+      wx.navigateTo({ url: `${currentWorld.page}?autostart=1` });
+    }
   },
 
   onRhythmChange(event) {

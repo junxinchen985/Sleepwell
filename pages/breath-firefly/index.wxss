@@ -1,0 +1,367 @@
+/*
+  深呼吸 · 萤火虫引导页
+  ---------------------------------------------------------------------------
+  设计令牌（与 outputs/深呼吸-设计规范.md 对应）：
+    背景 #030304 ~ #0C0B0A ｜ 主光 #FFB347（已调暗为 E29A5C 系）｜ 文字 #F6F3ED / #9E9A93 / #5B5955
+  换算：390pt 设计稿 = 750rpx，1pt ≈ 1.923rpx
+*/
+
+page {
+  background: #030304;
+}
+
+.breathing-control-anchor {
+  position: absolute;
+  z-index: 105;
+  bottom: calc(env(safe-area-inset-bottom) + 320rpx);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.fb-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  color: #F6F3ED;
+  /* 兜底底色：背景图加载前后都不该露出白底 */
+  background-color: #141B3D;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans SC", sans-serif;
+}
+
+/* 星空背景层：用 <image> 而不是 WXSS background-image（本地图在 WXSS 里不生效）。
+   它是普通组件，永远在文字之下，也不会像原生 canvas 那样盖住 DOM。 */
+.fb-sky {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ===========================================================================
+   ① 导航行：返回在左、设置在右
+   行高与右内边距由 JS 注入的 nav.topbarStyle 决定（自动避让微信胶囊）
+   =========================================================================== */
+
+.fb-nav {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  padding-left: 32rpx;
+  padding-bottom: 4rpx;
+}
+
+.fb-nav__back,
+.fb-nav__settings {
+  position: absolute;
+  bottom: 4rpx;
+}
+
+.fb-nav__back {
+  left: 32rpx;
+}
+
+.fb-nav__settings {
+  right: 86px;
+}
+
+.fb-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  color: rgba(246, 243, 237, 0.72);
+  background: transparent;
+}
+
+/* 返回：两条边框拼出圆头折线 */
+.fb-chevron {
+  width: 18rpx;
+  height: 18rpx;
+  margin-left: -6rpx;
+  border-left: 3rpx solid currentColor;
+  border-bottom: 3rpx solid currentColor;
+  border-radius: 2rpx;
+  transform: rotate(45deg);
+}
+
+/* 设置：齿圈 + 8 颗齿。小尺寸下实心齿圈才不会读成"太阳" */
+.fb-gear { position: relative; width: 44rpx; height: 44rpx; }
+
+.fb-gear__tooth {
+  position: absolute;
+  left: 50%;
+  top: 1rpx;
+  width: 6rpx;
+  height: 9rpx;
+  margin-left: -3rpx;
+  border-radius: 3rpx;
+  background: currentColor;
+  transform-origin: 50% 21rpx;
+}
+
+.fb-gear__ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 26rpx;
+  height: 26rpx;
+  margin: -13rpx 0 0 -13rpx;
+  border: 8rpx solid currentColor;
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+/* ===========================================================================
+   ② 标题区：标题与阶段提示绝对居中，运行时交叉淡入
+   =========================================================================== */
+
+.fb-head {
+  position: relative;
+  z-index: 9;
+  flex: 0 0 auto;
+  height: 132rpx;
+  margin-top: -44rpx;
+}
+
+/* left:50% + translateX(-50%) 才是真正的绝对居中，不受左右图标宽度影响 */
+.fb-titles,
+.fb-prompt {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%);
+  transition: opacity 320ms ease;
+}
+
+.fb-titles.is-hidden { opacity: 0; }
+
+.fb-title {
+  font-size: 40rpx;      /* 20pt */
+  line-height: 54rpx;
+  font-weight: 500;
+  color: #F6F3ED;
+  letter-spacing: 0;
+}
+
+.fb-subtitle {
+  margin-top: 4rpx;
+  font-size: 24rpx;      /* 12.5pt */
+  line-height: 34rpx;
+  font-weight: 300;
+  color: #9E9A93;
+  letter-spacing: 0;
+}
+
+.fb-prompt { opacity: 0; }
+.fb-prompt.is-visible { opacity: 1; }
+
+.fb-prompt__main {
+  font-size: 34rpx;      /* 17pt */
+  line-height: 50rpx;
+  font-weight: 500;
+  color: #F6F3ED;
+}
+
+.fb-prompt__sub {
+  margin-top: 2rpx;
+  font-size: 23rpx;
+  line-height: 32rpx;
+  font-weight: 300;
+  color: #9E9A93;
+}
+
+.fb-prompt__count {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  line-height: 32rpx;
+  color: #D9A567;        /* 比主光更暗的金，避免抢焦点 */
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===========================================================================
+   ③ 舞台：canvas 待在自己的盒子里，透明底
+   =========================================================================== */
+
+.fb-stage {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.fb-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+/* ===========================================================================
+   ④ 操作区：按压按钮
+   =========================================================================== */
+
+.fb-dock {
+  position: relative;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  /* 进度文字已移除，底部留白改由操作区自己承担，避免提示语贴到 Home 指示条 */
+  padding: 0 48rpx calc(env(safe-area-inset-bottom) + 56rpx);
+}
+
+.fb-press {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 185rpx;   /* 96pt，远超 44pt 最小热区 */
+  height: 185rpx;
+  transition: transform 120ms ease-out;
+}
+
+.fb-press.is-pressing { transform: scale(0.94); }
+
+/* 呼吸进行中：按钮整体提亮，和「轻触结束」的提示语对应 */
+.fb-press.is-active .fb-press__ring {
+  border-color: rgba(255, 179, 71, 0.46);
+  box-shadow: 0 0 66rpx rgba(255, 179, 71, 0.20), inset 0 0 44rpx rgba(255, 179, 71, 0.12);
+}
+
+.fb-press.is-active .fb-press__core {
+  box-shadow:
+    0 0 52rpx rgba(226, 154, 92, 0.56),
+    0 0 116rpx rgba(226, 154, 92, 0.26),
+    inset 0 -4rpx 12rpx rgba(90, 52, 8, 0.30),
+    inset 0 4rpx 10rpx rgba(255, 240, 220, 0.42);
+}
+
+.fb-press__soft {
+  position: absolute;
+  top: -27rpx;
+  right: -27rpx;
+  bottom: -27rpx;
+  left: -27rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 241, 74, 0.14) 0%, rgba(230, 241, 74, 0) 68%);
+}
+
+.fb-press__ring {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: 2rpx solid rgba(230, 241, 74, 0.34);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.10) 0%, rgba(230, 241, 74, 0.07) 55%, rgba(230, 241, 74, 0.02) 100%);
+  box-shadow: 0 0 50rpx rgba(230, 241, 74, 0.20), inset 0 0 35rpx rgba(230, 241, 74, 0.09);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.is-pressing .fb-press__ring {
+  border-color: rgba(230, 241, 74, 0.56);
+  box-shadow: 0 0 70rpx rgba(230, 241, 74, 0.28), inset 0 0 45rpx rgba(230, 241, 74, 0.16);
+}
+
+.fb-press__core {
+  position: relative;
+  width: 108rpx;   /* 56pt */
+  height: 108rpx;
+  border-radius: 50%;
+  /* 内圆改成黄绿半透明：与萤火虫同一色系，透出背后的星空 */
+  background: radial-gradient(circle at 50% 38%, rgba(255, 240, 138, 0.44) 0%, rgba(230, 241, 74, 0.20) 52%, rgba(168, 190, 44, 0.08) 100%);
+  box-shadow:
+    0 0 36rpx rgba(230, 241, 74, 0.30),
+    0 0 86rpx rgba(230, 241, 74, 0.13),
+    inset 0 4rpx 10rpx rgba(255, 255, 255, 0.30);
+  transition: box-shadow 160ms ease;
+}
+
+.fb-press__core::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  width: 38rpx;
+  height: 25rpx;
+  margin: -13rpx 0 0 -19rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 245, 230, 0.68) 0%, rgba(255, 245, 230, 0) 70%);
+}
+
+.is-pressing .fb-press__core {
+  box-shadow:
+    0 0 54rpx rgba(230, 241, 74, 0.46),
+    0 0 120rpx rgba(230, 241, 74, 0.22),
+    inset 0 4rpx 10rpx rgba(255, 255, 255, 0.30);
+}
+
+.fb-hint {
+  margin-top: 24rpx;
+  font-size: 24rpx;
+  line-height: 34rpx;
+  font-weight: 300;
+  color: rgba(220, 232, 170, 0.82);
+}
+
+/* ===========================================================================
+   ⑤ 设置面板
+   结构复用 app.wxss 的 .sheet-mask / .bottom-sheet / .sheet-handle /
+   .sheet-close / .close-icon / .sheet-title / .setting-row，只覆盖配色，
+   这样和 App 内其它页面保持同一套交互与间距。
+   =========================================================================== */
+
+.fb-sheet {
+  background: #14100C;
+  border-top: 1rpx solid rgba(255, 179, 71, 0.12);
+}
+
+.fb-sheet .setting-row {
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.08);
+}
+
+.fb-sheet .setting-value {
+  color: #9E9A93;
+}
+
+.fb-sound-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 96rpx;
+  color: #C8A87E;
+  font-size: 26rpx;
+  text-align: left;
+}
+
+.fb-sound-link__arrow {
+  color: #6B6257;
+  font-size: 28rpx;
+}
+
+/* 小屏兜底：纵向空间不足时压缩留白，保证按钮与状态文字都不被裁掉 */
+@media (max-height: 640px) {
+  .fb-head { height: 108rpx; }
+  .fb-dock { padding-bottom: 16rpx; }
+  .fb-press { width: 156rpx; height: 156rpx; }
+  .fb-press__core { width: 92rpx; height: 92rpx; }
+}
