@@ -1,10 +1,6 @@
 {
   "pages": [
     "pages/agent/index",
-    "pages/cloud/index",
-    "pages/breath-firefly/index",
-    "pages/breath-orb/index",
-    "pages/whale/index",
     "pages/record/index",
     "pages/night-settings/index",
     "pages/breathe/index",
