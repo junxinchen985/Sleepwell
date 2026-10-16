@@ -1,0 +1,24 @@
+<!--
+  呼吸光团页
+  ---------------------------------------------------------------------------
+  Canvas 只负责中心设计图光团，共享沉浸控件覆盖在页面最上层。
+-->
+<view class="orb-page orb-page--{{phase}} {{running ? 'is-running' : 'is-idle'}}">
+  <view class="orb-grid" aria-hidden="true"></view>
+  <view class="orb-vignette" aria-hidden="true"></view>
+
+  <view class="orb-stage">
+    <canvas
+      type="2d"
+      id="breathOrbCanvas"
+      class="orb-canvas"
+      disable-scroll="true"
+      aria-label="呼吸光团粒子动画"
+    ></canvas>
+  </view>
+
+  <immersive-chrome></immersive-chrome>
+  <view class="breathing-control-anchor">
+    <breathing-action-button active="{{running}}" bind:toggle="handleToggle"></breathing-action-button>
+  </view>
+</view>

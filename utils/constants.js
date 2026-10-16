@@ -2,11 +2,11 @@ const WORLDS = [
   { id: 'dandelion', name: '蒲公英', glyph: '✣', accent: '#d8e8cf' },
   { id: 'mist', name: '月光涟漪', glyph: '≋', accent: '#c9ded9' },
   { id: 'moon', name: '薰衣草花海', glyph: '✿', accent: '#ddc7f0' },
-  { id: 'water', name: '湖面', glyph: '⌁', accent: '#a9d2ce' },
+  { id: 'water', name: '云', glyph: '⌁', accent: '#a9d2ce', page: '/pages/cloud/index' },
   { id: 'stardust', name: '星空海', glyph: '✦', accent: '#d6d8c8' },
-  { id: 'firefly', name: '萤火虫', glyph: '·', accent: '#dce89b' },
-  { id: 'warmLight', name: '暖光', glyph: '☼', accent: '#f2c99f' },
-  { id: 'orb', name: '呼吸光团', glyph: '●', accent: '#c6e0d4' }
+  { id: 'firefly', name: '萤火虫', glyph: '·', accent: '#dce89b', page: '/pages/breath-firefly/index' },
+  { id: 'warmLight', name: '鲸鱼', glyph: '☼', accent: '#f2c99f', page: '/pages/whale/index' },
+  { id: 'orb', name: '呼吸光团', glyph: '●', accent: '#c6e0d4', page: '/pages/breath-orb/index' }
 ];
 
 const RHYTHMS = [
