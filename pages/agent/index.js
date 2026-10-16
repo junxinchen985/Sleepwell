@@ -27,13 +27,29 @@ Page({
     totalBreaths: 0,
     sevenDay: { activeDays: 0, completedSessions: 0, outcomes: { relieved: 0, same: 0, tense: 0 } }
   },
-  onLoad() {
+  onLoad(options) {
+    if (!options || (!options.prompt && !options.draft)) {
+      wx.reLaunch({ url: '/pages/home/index' });
+      return;
+    }
     this.recorder = wx.getRecorderManager ? wx.getRecorderManager() : null;
     if (this.recorder && this.recorder.onStop) this.recorder.onStop((result) => this.setData({ recording: false, voiceReady: Boolean(result && result.tempFilePath) }));
     this.keyboardListener = (event) => {
       this.setData({ keyboardHeight: this.data.showChat ? Math.max(0, event.height || 0) : 0 });
     };
     if (wx.onKeyboardHeightChange) wx.onKeyboardHeightChange(this.keyboardListener);
+    if (options.prompt) {
+      this.beginConversation('', this.decodeEntryParam(options.prompt).slice(0, 120));
+    } else if (options.draft) {
+      const draft = this.decodeEntryParam(options.draft).slice(0, 200);
+      this.beginConversation('');
+      this.setData({ draft, canSend: Boolean(draft) });
+      this.sendMessage();
+    }
+  },
+  decodeEntryParam(value) {
+    try { return decodeURIComponent(value); }
+    catch (error) { return String(value); }
   },
   onShow() {
     const preferences = nightPreferences.read();
@@ -48,7 +64,7 @@ Page({
     this.cancelPending();
     if (wx.offKeyboardHeightChange && this.keyboardListener) wx.offKeyboardHeightChange(this.keyboardListener);
   },
-  onShareAppMessage() { return { title: '夜喵，你的 AI 睡前陪伴助手', path: '/pages/agent/index' }; },
+  onShareAppMessage() { return { title: '夜喵，你的 AI 睡前陪伴助手', path: '/pages/home/index' }; },
   onShareTimeline() { return { title: '夜喵，你的 AI 睡前陪伴助手' }; },
   noop() {},
   openSettings() { wx.navigateTo({ url: '/pages/night-settings/index' }); },
@@ -61,8 +77,8 @@ Page({
   openRecords() { wx.reLaunch({ url: '/pages/record/index' }); },
   closeRecords() { this.setData({ showRecords: false }); },
   openChat() { if (this.data.homeState === 'initial') this.beginConversation(''); this.setData({ inputFocus: true }); },
-  beginConversation(topic) {
-    this.setData({ homeState: 'chat', showChat: true, activeTopic: topic, answers: [], recommendation: null, messages: [{ id: 'intro', role: 'agent', text: guide.openings[topic] || this.data.welcomeQuestion || '今晚有什么让你难以放松？' }], draft: '', canSend: false, inputFocus: false, scrollAnchor: 'conversation-end' });
+  beginConversation(topic, openingText) {
+    this.setData({ homeState: 'chat', showChat: true, activeTopic: topic, answers: [], recommendation: null, messages: [{ id: 'intro', role: 'agent', text: openingText || guide.openings[topic] || this.data.welcomeQuestion || '今晚有什么让你难以放松？' }], draft: '', canSend: false, inputFocus: false, scrollAnchor: 'conversation-end' });
   },
   playRecommendation() {
     const item = this.data.recommendation;
@@ -85,6 +101,7 @@ Page({
     this.cancelPending();
     if (wx.hideKeyboard) wx.hideKeyboard();
     this.setData({ homeState: 'initial', showChat: false, messages: [], answers: [], recommendation: null, draft: '', canSend: false, inputFocus: false, keyboardHeight: 0 });
+    wx.reLaunch({ url: '/pages/home/index' });
   },
   onDraftChange(event) { this.setData({ draft: event.detail.value, canSend: Boolean(event.detail.value.trim()) }); },
   onInputFocus() { this.setData({ inputFocus: true }); },

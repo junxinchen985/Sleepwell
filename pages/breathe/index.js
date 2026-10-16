@@ -354,7 +354,7 @@ Page({
     wx.reLaunch({ url: '/pages/record/index' });
   },
 
-  goAgent() { wx.reLaunch({ url: '/pages/agent/index' }); },
+  goAgent() { wx.reLaunch({ url: '/pages/home/index' }); },
 
   closeRecords() {
     this.setData({ showRecords: false });

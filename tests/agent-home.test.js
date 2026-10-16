@@ -6,7 +6,7 @@ const path = require('node:path');
 const navigation = require('../utils/navigation');
 const { getRecordView } = require('../utils/record-view');
 
-function harness() {
+function harness(options = { prompt: '测试开场白' }) {
   let page;
   let timer;
   let keyboardListener;
@@ -30,20 +30,20 @@ function harness() {
   };
   vm.runInNewContext(fs.readFileSync(script, 'utf8'), context);
   page.setData = (values) => Object.assign(page.data, values);
-  page.onLoad();
+  page.onLoad(options);
   return { page, routes, finish: () => { const fn = timer; timer = null; if (fn) fn(); }, keyboard: (height) => keyboardListener({ height }), hasListener: () => Boolean(keyboardListener) };
 }
 
 test('new launch and fallback route use the Nightcat homepage', () => {
   const config = require('../app.json');
-  assert.equal(config.pages[0], 'pages/agent/index');
+  assert.equal(config.pages[0], 'pages/home/index');
   const routes = [];
   global.wx = { reLaunch: ({ url }) => routes.push(url), navigateBack: () => routes.push('back') };
   global.getCurrentPages = () => [{}];
   navigation.backOrHome();
   global.getCurrentPages = () => [{}, {}];
   navigation.backOrHome();
-  assert.deepEqual(routes, ['/pages/agent/index', 'back']);
+  assert.deepEqual(routes, ['/pages/home/index', 'back']);
   delete global.wx;
   delete global.getCurrentPages;
 });
@@ -109,7 +109,7 @@ test('homepage actions target existing settings, breath and guide pages', () => 
   const { page, routes } = harness();
   page.openSettings(); page.goBreathe(); page.startGuide();
   assert.deepEqual(routes, ['/pages/night-settings/index', '/pages/breathe/index', '/pages/focus/index']);
-  assert.equal(page.onShareAppMessage().path, '/pages/agent/index');
+  assert.equal(page.onShareAppMessage().path, '/pages/home/index');
 });
 
 test('record navigation opens the standalone calendar page', () => {
@@ -117,6 +117,31 @@ test('record navigation opens the standalone calendar page', () => {
   page.openRecords();
   assert.deepEqual(routes, ['/pages/record/index']);
   assert.equal(page.data.showRecords, false);
+});
+
+test('legacy homepage links redirect to the new homepage', () => {
+  const { routes } = harness({});
+  assert.deepEqual(routes, ['/pages/home/index']);
+});
+
+test('homepage counselor prompt uses the original chat page', () => {
+  const { page, routes } = harness({ prompt: encodeURIComponent('今晚慢慢聊') });
+  assert.equal(page.data.messages[0].text, '今晚慢慢聊');
+  assert.equal(page.data.showChat, true);
+  assert.deepEqual(routes, []);
+  page.closeChat();
+  assert.deepEqual(routes, ['/pages/home/index']);
+});
+
+test('homepage draft sends once using existing guide logic', () => {
+  const { page, routes } = harness({ draft: encodeURIComponent('最近睡不着') });
+  assert.equal(page.data.answers.length, 1);
+  assert.equal(page.data.answers[0], '最近睡不着');
+  assert.equal(page.data.draft, '');
+  assert.equal(page.data.canSend, false);
+  page.sendMessage();
+  assert.equal(page.data.answers.length, 1);
+  assert.deepEqual(routes, []);
 });
 
 test('record views share stored data and normalize legacy cycle counts', () => {

@@ -1,0 +1,82 @@
+@import "../../styles/nightcat.wxss";
+
+.skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+  margin-top: 36rpx;
+}
+
+.skill-card {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border: 1rpx solid var(--cat-card-line);
+  border-radius: 27rpx;
+  background: var(--cat-card);
+}
+
+.skill-cover {
+  flex: none;
+  width: 132rpx;
+  height: 132rpx;
+  border-radius: 24rpx;
+}
+
+.skill-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: 24rpx;
+}
+
+.skill-title {
+  color: var(--cat-title);
+  font-size: 30rpx;
+  font-weight: 700;
+  line-height: 42rpx;
+}
+
+.skill-desc {
+  margin-top: 4rpx;
+  color: var(--cat-sub);
+  font-size: 23rpx;
+  line-height: 33rpx;
+}
+
+.skill-meta {
+  margin-top: 8rpx;
+  color: rgba(159, 179, 172, 0.8);
+  font-size: 22rpx;
+  line-height: 32rpx;
+}
+
+.skill-cta {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6rpx;
+  width: 156rpx;
+  height: 62rpx;
+  margin-left: 16rpx;
+  border-radius: 31rpx;
+  background: var(--cat-gold);
+}
+
+.skill-cta-label {
+  color: #14312b;
+  font-size: 24rpx;
+  font-weight: 500;
+  line-height: 34rpx;
+}
+
+.skill-cta-icon {
+  width: 21rpx;
+  height: 21rpx;
+}
+
+.is-pressed {
+  opacity: 0.72;
+}

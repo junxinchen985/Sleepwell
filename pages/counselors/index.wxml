@@ -1,0 +1,38 @@
+<view class="page-shell cat-page">
+  <view class="topbar secondary-topbar" style="{{nav.topbarStyle}}">
+    <button class="icon-button icon-button--back" bindtap="goBack" aria-label="返回">
+      <view class="back-arrow"></view>
+    </button>
+    <text class="topbar-label">咨询师</text>
+  </view>
+
+  <scroll-view class="cat-scroll" scroll-y>
+    <view class="cat-body">
+      <text class="cat-title">选择你此刻最需要的陪伴方式</text>
+      <text class="cat-sub">三个方向，都可以从一句话开始。选中后进入夜喵对话。</text>
+
+      <view class="counselor-list">
+        <button
+          class="counselor-card {{item.id === selectedId ? 'is-active' : ''}}"
+          wx:for="{{counselors}}"
+          wx:key="id"
+          data-id="{{item.id}}"
+          bindtap="choose"
+          hover-class="is-pressed"
+        >
+          <image class="counselor-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+          <view class="counselor-copy">
+            <text class="counselor-name">{{item.name}}</text>
+            <text class="counselor-desc">{{item.desc}}</text>
+            <view class="counselor-tags">
+              <text class="counselor-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+            </view>
+          </view>
+          <image class="counselor-go" src="/assets/agent/icons/chevron-right-muted.png" mode="aspectFit"></image>
+        </button>
+      </view>
+
+      <text class="cat-note">当前三位咨询师都使用本地引导脚本回复，没有接入真实的 AI 或人工服务。</text>
+    </view>
+  </scroll-view>
+</view>

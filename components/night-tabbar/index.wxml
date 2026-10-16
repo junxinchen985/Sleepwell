@@ -1,0 +1,14 @@
+<view class="tabbar">
+  <button
+    wx:for="{{items}}"
+    wx:key="key"
+    class="tabbar-item {{item.key === active ? 'is-active' : ''}}"
+    data-key="{{item.key}}"
+    bindtap="onTap"
+    hover-class="is-pressed"
+    aria-label="{{item.label}}"
+  >
+    <image class="tabbar-icon" src="{{item.key === active ? item.iconActive : item.icon}}" mode="aspectFit"></image>
+    <text class="tabbar-label">{{item.label}}</text>
+  </button>
+</view>

@@ -1,0 +1,32 @@
+<view class="page-shell cat-page">
+  <view class="topbar secondary-topbar" style="{{nav.topbarStyle}}">
+    <button class="icon-button icon-button--back" bindtap="goBack" aria-label="返回">
+      <view class="back-arrow"></view>
+    </button>
+    <text class="topbar-label">书中技能</text>
+  </view>
+
+  <scroll-view class="cat-scroll" scroll-y>
+    <view class="cat-body">
+      <text class="cat-title">从经典心理书中提炼可练习的方法</text>
+      <text class="cat-sub">每一本都拆成了三步，睡前十几分钟就能做完一次。</text>
+
+      <view class="skill-list">
+        <view class="skill-card" wx:for="{{books}}" wx:key="id">
+          <image class="skill-cover" src="{{item.cover}}" mode="aspectFill"></image>
+          <view class="skill-copy">
+            <text class="skill-title">{{item.title}}</text>
+            <text class="skill-desc">{{item.desc}}</text>
+            <text class="skill-meta">{{item.minutes}} 分钟 · {{item.steps.length}} 步练习</text>
+          </view>
+          <button class="skill-cta" data-id="{{item.id}}" bindtap="openSkill" hover-class="is-pressed" aria-label="开始练习：{{item.title}}">
+            <text class="skill-cta-label">开始练习</text>
+            <image class="skill-cta-icon" src="{{assets.ctaArrow}}" mode="aspectFit"></image>
+          </button>
+        </view>
+      </view>
+
+      <text class="cat-note">练习脚本保存在小程序本地，完成情况不会上传到任何服务器。</text>
+    </view>
+  </scroll-view>
+</view>

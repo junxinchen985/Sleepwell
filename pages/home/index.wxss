@@ -1,0 +1,569 @@
+@import "../../styles/nightcat.wxss";
+
+/* ============================================================
+   夜喵首页 · 对照 Figma「首页 · Home 390×844」实现
+   换算：1 设计 px = 750/390 = 1.923rpx，390 宽设备上 1:1 还原
+   ============================================================ */
+
+.home-page {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: #06231e;
+}
+
+/* ---------- 背景：插画 + 渐变压暗 ---------- */
+
+.night-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1623rpx; /* 844 设计 px */
+  background: #06231e;
+  pointer-events: none;
+}
+
+.night-bg-art {
+  display: block;
+  width: 750rpx;
+  height: 769rpx; /* 素材 780×800 → 设计 400px 处收尾 */
+}
+
+.night-bg-veil {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1623rpx;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 35, 30, 0) 0%,
+    rgba(6, 35, 30, 0) 17%,
+    rgba(6, 35, 30, 0.55) 28%,
+    rgba(6, 35, 30, 0.94) 36%,
+    #06231e 45%,
+    #06231e 100%
+  );
+}
+
+/* ---------- 滚动内容区 ---------- */
+
+.home-scroll {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 226rpx; /* 输入栏 88rpx + 导航 138rpx */
+  left: 0;
+}
+
+.home-flow {
+  min-height: 1394rpx; /* 设计稿内容总高 725px */
+}
+
+/* ---------- 品牌区 ---------- */
+
+.brand {
+  position: relative;
+  height: 412rpx; /* 到咨询师区顶部（214 设计 px） */
+}
+
+.brand-title-row {
+  display: flex;
+  align-items: center;
+  padding: 0 37rpx;
+}
+
+.brand-title {
+  color: #f6e6cc;
+  font-size: 85rpx;
+  font-weight: 900;
+  line-height: 100rpx;
+  letter-spacing: 4rpx;
+}
+
+.brand-crescent {
+  width: 42rpx;
+  height: 42rpx;
+  /* 设计稿里月牙紧跟在「夜喵」右侧，间距随字体字形宽度略有浮动 */
+  margin-left: 2rpx;
+  margin-bottom: 4rpx;
+}
+
+.brand-slogan-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 54rpx;
+  margin-top: 6rpx;
+  padding: 0 37rpx;
+}
+
+.brand-slogan {
+  color: #f1dda6;
+  font-size: 38rpx;
+  font-weight: 300;
+  line-height: 54rpx;
+  letter-spacing: 3rpx;
+}
+
+.brand-settings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88rpx;
+  height: 88rpx;
+  margin-left: auto;
+  margin-right: 35rpx;
+  border-radius: 50%;
+}
+
+.brand-settings-icon {
+  width: 44rpx;
+  height: 44rpx;
+  margin-bottom: 8rpx;
+}
+
+.brand-flourish {
+  position: absolute;
+  left: 37rpx;
+  top: 50rpx;
+  height: 31rpx;
+}
+
+.brand-flourish-line {
+  width: 365rpx;
+  height: 31rpx;
+}
+
+.brand-flourish-star {
+  position: absolute;
+  top: 0;
+  left: 356rpx;
+  width: 27rpx;
+  height: 27rpx;
+}
+
+.brand-intro {
+  display: flex;
+  flex-direction: column;
+  margin-top: 23rpx;
+  padding: 0 37rpx;
+  color: #dbd5c1;
+  font-size: 29rpx;
+  line-height: 42rpx;
+  letter-spacing: 0.3rpx;
+}
+
+/* ---------- 通用小节头 ---------- */
+
+.sec-head {
+  display: flex;
+  align-items: flex-start;
+  padding: 8rpx 37rpx 0;
+}
+
+.sec-icon {
+  flex: none;
+  width: 40rpx;
+  height: 40rpx;
+  margin-top: 6rpx;
+}
+
+.sec-copy {
+  display: flex;
+  flex-direction: column;
+  margin-left: 15rpx;
+}
+
+.sec-title {
+  color: #f7ebd2;
+  font-size: 35rpx;
+  font-weight: 700;
+  line-height: 46rpx;
+  letter-spacing: 1rpx;
+}
+
+.sec-sub {
+  margin-top: 6rpx;
+  color: #93a79b;
+  font-size: 25rpx;
+  line-height: 35rpx;
+}
+
+.sec-more {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-top: 21rpx;
+  margin-left: auto;
+  gap: 10rpx;
+}
+
+/* 不改变视觉位置，只把「查看全部」的点击热区向四周放大 */
+.sec-more::after {
+  content: '';
+  position: absolute;
+  top: -16rpx;
+  right: -14rpx;
+  bottom: -16rpx;
+  left: -14rpx;
+}
+
+.sec-more-label {
+  color: #ede6d6;
+  font-size: 27rpx;
+  font-weight: 500;
+  line-height: 37rpx;
+}
+
+.sec-more-icon {
+  width: 27rpx;
+  height: 27rpx;
+}
+
+/* ---------- 咨询师卡片 ---------- */
+
+.card-scroll {
+  margin-top: 19rpx;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 19rpx;
+  height: 271rpx; /* 选中态高度，未选中卡片沿中线对齐 */
+  padding: 0 19rpx;
+}
+
+.c-card {
+  position: relative;
+  flex: none;
+  width: 219rpx;
+  height: 250rpx;
+  overflow: hidden;
+  border: 2rpx solid rgba(110, 143, 128, 0.3);
+  border-radius: 29rpx;
+  background: rgba(10, 38, 34, 0.86);
+  transition: width 220ms ease, height 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.c-card.is-active {
+  width: 242rpx;
+  height: 271rpx;
+  border: 3rpx solid rgba(239, 224, 168, 0.95);
+  border-radius: 31rpx;
+  background: #0b2b27;
+}
+
+.c-avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+}
+
+.c-scrim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 43, 39, 0) 30%,
+    rgba(11, 43, 39, 0.82) 58%,
+    rgba(9, 36, 33, 0.98) 100%
+  );
+}
+
+.c-card.is-active .c-scrim {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 43, 39, 0) 34%,
+    rgba(11, 43, 39, 0.82) 62%,
+    rgba(9, 36, 33, 0.98) 100%
+  );
+}
+
+.c-card:not(.is-active) .c-avatar {
+  filter: brightness(0.72);
+}
+
+.c-name {
+  position: absolute;
+  top: 115rpx;
+  left: 19rpx;
+  color: #f7ebd2;
+  font-size: 27rpx;
+  font-weight: 700;
+  line-height: 38rpx;
+  white-space: nowrap;
+}
+
+.c-card.is-active .c-name {
+  top: 125rpx;
+  left: 19rpx;
+  font-size: 29rpx;
+}
+
+.c-desc {
+  position: absolute;
+  top: 158rpx;
+  left: 19rpx;
+  color: #b9c7bb;
+  font-size: 19rpx;
+  line-height: 29rpx;
+  white-space: nowrap;
+}
+
+.c-card.is-active .c-desc {
+  top: 167rpx;
+  left: 17rpx;
+}
+
+.c-tags {
+  position: absolute;
+  top: 192rpx;
+  left: 19rpx;
+  display: flex;
+  gap: 12rpx;
+}
+
+.c-card.is-active .c-tags {
+  top: 202rpx;
+  left: 19rpx;
+}
+
+.c-tag {
+  padding: 8rpx 17rpx;
+  border: 1rpx solid rgba(42, 74, 66, 0.8);
+  border-radius: 21rpx;
+  background: rgba(14, 58, 52, 0.55);
+  color: #a9bcaf;
+  font-size: 21rpx;
+  font-weight: 500;
+  line-height: 27rpx;
+  white-space: nowrap;
+}
+
+.c-card.is-active .c-tag {
+  border-color: rgba(240, 223, 160, 0.5);
+  background: rgba(240, 223, 160, 0.14);
+  color: #f2e4b4;
+}
+
+/* ---------- 书中技能 ---------- */
+
+.section-books {
+  margin-top: 35rpx;
+}
+
+.sec-head-books {
+  padding-top: 12rpx;
+}
+
+.book-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13rpx;
+  margin: 2rpx 19rpx 0 23rpx;
+}
+
+.book-row {
+  display: flex;
+  align-items: flex-start;
+  height: 104rpx;
+  padding: 4rpx 17rpx 0 24rpx;
+  overflow: hidden;
+  border: 1rpx solid rgba(42, 74, 66, 0.6);
+  border-radius: 27rpx;
+  background: rgba(12, 43, 40, 0.58);
+}
+
+.book-cover {
+  flex: none;
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 23rpx;
+}
+
+.book-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: 54rpx;
+  padding-top: 15rpx;
+}
+
+.book-title {
+  color: #f7ebd2;
+  font-size: 29rpx;
+  font-weight: 700;
+  line-height: 38rpx;
+  white-space: nowrap;
+}
+
+.book-desc {
+  margin-top: 4rpx;
+  color: #93a79b;
+  font-size: 23rpx;
+  line-height: 31rpx;
+  white-space: nowrap;
+}
+
+.book-cta {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 169rpx;
+  height: 65rpx;
+  margin-top: 12rpx;
+  margin-left: auto;
+  gap: 8rpx;
+  border-radius: 33rpx;
+  background: #f6df9e;
+}
+
+.book-cta-label {
+  color: #14312b;
+  font-size: 25rpx;
+  font-weight: 500;
+  line-height: 35rpx;
+}
+
+.book-cta-icon {
+  width: 23rpx;
+  height: 23rpx;
+}
+
+/* ---------- 你可能想试试 ---------- */
+
+.try-head {
+  display: flex;
+  align-items: flex-start;
+  height: 37rpx;
+  padding: 0 37rpx;
+}
+
+.try-icon {
+  flex: none;
+  width: 33rpx;
+  height: 33rpx;
+  margin-top: 4rpx;
+}
+
+.try-title {
+  margin-left: 12rpx;
+  color: #e9e4d4;
+  font-size: 27rpx;
+  font-weight: 500;
+  line-height: 37rpx;
+  letter-spacing: 0.27rpx;
+}
+
+.chip-scroll {
+  margin-top: 15rpx;
+}
+
+.chip-row {
+  display: flex;
+  gap: 29rpx;
+  padding: 0 37rpx;
+}
+
+.chip {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8rpx;
+  height: 73rpx;
+  padding: 0 15rpx;
+  border: 1rpx solid rgba(62, 107, 96, 0.6);
+  border-radius: 35rpx;
+  background: rgba(14, 58, 52, 0.55);
+}
+
+.chip-icon {
+  flex: none;
+  width: 27rpx;
+  height: 27rpx;
+}
+
+.chip-label {
+  color: #dcd8c6;
+  font-size: 23rpx;
+  line-height: 35rpx;
+  white-space: nowrap;
+}
+
+.chip-arrow {
+  flex: none;
+  width: 21rpx;
+  height: 21rpx;
+}
+
+/* ---------- 底部固定区 ---------- */
+
+.dock {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+}
+
+.composer {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  margin: 0 38rpx;
+  padding: 0 8rpx 0 31rpx;
+  border: 1rpx solid rgba(62, 107, 96, 0.45);
+  border-radius: 44rpx;
+  background: rgba(14, 58, 52, 0.5);
+}
+
+.composer-icon {
+  flex: none;
+  width: 38rpx;
+  height: 38rpx;
+}
+
+.composer-input {
+  flex: 1;
+  min-width: 0;
+  height: 76rpx;
+  margin-left: 19rpx;
+  color: #f7ebd2;
+  font-size: 27rpx;
+  line-height: 76rpx;
+}
+
+.composer-placeholder {
+  color: #849b90;
+}
+
+.composer-send {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 69rpx;
+  height: 69rpx;
+  border-radius: 35rpx;
+  background: #f6df9e;
+}
+
+.composer-send-icon {
+  width: 33rpx;
+  height: 33rpx;
+}
+
+.is-pressed {
+  opacity: 0.72;
+}

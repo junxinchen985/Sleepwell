@@ -1,0 +1,109 @@
+@import "../../styles/nightcat.wxss";
+
+.detail-head {
+  display: flex;
+  align-items: center;
+  margin-top: 24rpx;
+}
+
+.detail-cover {
+  flex: none;
+  width: 180rpx;
+  height: 180rpx;
+  border-radius: 28rpx;
+}
+
+.detail-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: 26rpx;
+}
+
+.detail-title {
+  color: var(--cat-title);
+  font-size: 36rpx;
+  font-weight: 700;
+  line-height: 50rpx;
+}
+
+.detail-desc {
+  margin-top: 6rpx;
+  color: var(--cat-sub);
+  font-size: 24rpx;
+  line-height: 34rpx;
+}
+
+.detail-meta {
+  margin-top: 8rpx;
+  color: rgba(159, 179, 172, 0.8);
+  font-size: 22rpx;
+  line-height: 32rpx;
+}
+
+.detail-summary {
+  display: block;
+  margin-top: 30rpx;
+  color: var(--cat-text);
+  font-size: 27rpx;
+  line-height: 44rpx;
+}
+
+.step-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  margin-top: 30rpx;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  padding: 26rpx;
+  border: 1rpx solid var(--cat-card-line);
+  border-radius: 24rpx;
+  background: var(--cat-card);
+}
+
+.step-index {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 48rpx;
+  height: 48rpx;
+  border-radius: 24rpx;
+  background: rgba(240, 223, 160, 0.14);
+  color: var(--cat-gold-soft);
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.step-copy {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20rpx;
+}
+
+.step-title {
+  color: var(--cat-title);
+  font-size: 28rpx;
+  font-weight: 600;
+  line-height: 40rpx;
+}
+
+.step-detail {
+  margin-top: 6rpx;
+  color: var(--cat-sub);
+  font-size: 24rpx;
+  line-height: 38rpx;
+}
+
+.detail-cta {
+  margin-top: 32rpx;
+}
+
+.is-pressed {
+  opacity: 0.72;
+}

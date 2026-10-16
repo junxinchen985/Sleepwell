@@ -1,0 +1,87 @@
+/* ============================================================
+   夜喵视觉（首页 + 咨询师 / 书中技能 / 话题 / 放松 等二级页共用）
+   ============================================================ */
+
+.home-page,
+.cat-page {
+  --cat-bg: #06231e;
+  --cat-card: rgba(12, 43, 40, 0.58);
+  --cat-card-line: rgba(42, 74, 66, 0.6);
+  --cat-gold: #f6df9e;
+  --cat-gold-soft: #f0dfa0;
+  --cat-title: #f7ebd2;
+  --cat-text: #dbd5c1;
+  --cat-sub: #93a79b;
+  --cat-muted: #9fb3ac;
+}
+
+.cat-page {
+  background: linear-gradient(180deg, #08281f 0%, #06231e 46%, #06231e 100%);
+}
+
+.cat-scroll {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.cat-scroll.has-tabbar {
+  bottom: 138rpx;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.cat-body {
+  padding: 0 37rpx 60rpx;
+}
+
+.cat-title {
+  display: block;
+  margin-top: 24rpx;
+  color: var(--cat-title);
+  font-size: 44rpx;
+  font-weight: 700;
+  line-height: 60rpx;
+}
+
+.cat-sub {
+  display: block;
+  margin-top: 10rpx;
+  color: var(--cat-sub);
+  font-size: 26rpx;
+  line-height: 38rpx;
+}
+
+.cat-card {
+  border: 1rpx solid var(--cat-card-line);
+  border-radius: 27rpx;
+  background: var(--cat-card);
+}
+
+.cat-note {
+  display: block;
+  margin-top: 32rpx;
+  color: rgba(159, 179, 172, 0.78);
+  font-size: 22rpx;
+  line-height: 34rpx;
+}
+
+.cat-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  background: var(--cat-gold);
+  color: #14312b;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.cat-cta--ghost {
+  border: 1rpx solid var(--cat-card-line);
+  background: transparent;
+  color: var(--cat-text);
+}

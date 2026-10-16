@@ -1,0 +1,30 @@
+<view class="page-shell cat-page">
+  <view class="topbar secondary-topbar" style="{{nav.topbarStyle}}">
+    <button class="icon-button icon-button--back" bindtap="goBack" aria-label="返回">
+      <view class="back-arrow"></view>
+    </button>
+    <text class="topbar-label">今晚的话题</text>
+  </view>
+
+  <scroll-view class="cat-scroll" scroll-y wx:if="{{topic}}">
+    <view class="cat-body">
+      <text class="topic-title">{{topic.title}}</text>
+      <text class="topic-intro">{{topic.intro}}</text>
+
+      <view class="topic-steps">
+        <view class="topic-step" wx:for="{{topic.steps}}" wx:key="title">
+          <view class="topic-step-index">{{index + 1}}</view>
+          <view class="topic-step-copy">
+            <text class="topic-step-title">{{item.title}}</text>
+            <text class="topic-step-detail">{{item.detail}}</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="cat-cta topic-cta" bindtap="startBreath" hover-class="is-pressed">开始 4-7-8 呼吸</button>
+      <button class="cat-cta cat-cta--ghost topic-cta" bindtap="talkToNightcat" hover-class="is-pressed">和夜喵说说这件事</button>
+
+      <text class="cat-note">这是本地写好的引导步骤，不会上传你的输入，也不代表专业心理诊断。</text>
+    </view>
+  </scroll-view>
+</view>

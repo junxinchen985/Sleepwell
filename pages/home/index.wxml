@@ -1,0 +1,151 @@
+<view class="home-page">
+  <!-- 整页夜色背景：插画 + 渐变压暗，对应设计稿 01 / 01b -->
+  <view class="night-bg">
+    <image
+      wx:if="{{!heroFailed}}"
+      class="night-bg-art"
+      src="{{assets.hero}}"
+      mode="aspectFill"
+      binderror="onHeroError"
+    ></image>
+    <view class="night-bg-veil"></view>
+  </view>
+
+  <!-- 可滚动内容区：底部输入栏与导航固定在屏幕底部 -->
+  <scroll-view class="home-scroll" scroll-y enhanced show-scrollbar="{{false}}">
+    <view class="home-flow">
+      <!-- 品牌区（03） -->
+      <view class="brand" style="padding-top: {{brandTop}}px;">
+        <view class="brand-title-row">
+          <text class="brand-title">夜喵</text>
+          <image class="brand-crescent" src="{{assets.crescent}}" mode="aspectFit"></image>
+        </view>
+        <view class="brand-slogan-row">
+          <text class="brand-slogan">陪你安心度过每个夜晚</text>
+          <button class="brand-settings" bindtap="openSettings" hover-class="is-pressed" aria-label="夜间设置">
+            <image class="brand-settings-icon" src="{{assets.settings}}" mode="aspectFit"></image>
+          </button>
+          <view class="brand-flourish">
+            <image class="brand-flourish-line" src="{{assets.flourish}}" mode="aspectFit"></image>
+            <image class="brand-flourish-star" src="{{assets.sparkle}}" mode="aspectFit"></image>
+          </view>
+        </view>
+        <view class="brand-intro">
+          <text>无论今天多么疲惫，</text>
+          <text>这里都有温柔的陪伴。</text>
+        </view>
+      </view>
+
+      <!-- 咨询师（04） -->
+      <view class="section section-counselors">
+        <view class="sec-head">
+          <image class="sec-icon" src="{{assets.counselorIcon}}" mode="aspectFit"></image>
+          <view class="sec-copy">
+            <text class="sec-title">咨询师</text>
+            <text class="sec-sub">选择你此刻最需要的陪伴方式</text>
+          </view>
+          <button class="sec-more" bindtap="openCounselors" hover-class="is-pressed">
+            <text class="sec-more-label">查看全部</text>
+            <image class="sec-more-icon" src="{{assets.chevron}}" mode="aspectFit"></image>
+          </button>
+        </view>
+        <scroll-view class="card-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+          <view class="card-row">
+            <view
+              class="c-card {{item.id === selectedId ? 'is-active' : ''}}"
+              wx:for="{{counselors}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="selectCounselor"
+              hover-class="is-pressed"
+              aria-label="{{item.name}}"
+            >
+              <image class="c-avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+              <view class="c-scrim"></view>
+              <text class="c-name">{{item.name}}</text>
+              <text class="c-desc">{{item.desc}}</text>
+              <view class="c-tags">
+                <text class="c-tag" wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this">{{tag}}</text>
+              </view>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+
+      <!-- 书中技能（05） -->
+      <view class="section section-books">
+        <view class="sec-head sec-head-books">
+          <image class="sec-icon" src="{{assets.bookIcon}}" mode="aspectFit"></image>
+          <view class="sec-copy">
+            <text class="sec-title">书中技能</text>
+            <text class="sec-sub">从经典心理书中提炼可练习的方法</text>
+          </view>
+          <button class="sec-more" bindtap="openSkills" hover-class="is-pressed">
+            <text class="sec-more-label">查看全部</text>
+            <image class="sec-more-icon" src="{{assets.chevron}}" mode="aspectFit"></image>
+          </button>
+        </view>
+        <view class="book-list">
+          <view class="book-row" wx:for="{{books}}" wx:key="id">
+            <image class="book-cover" src="{{item.cover}}" mode="aspectFill"></image>
+            <view class="book-copy">
+              <text class="book-title">{{item.title}}</text>
+              <text class="book-desc">{{item.desc}}</text>
+            </view>
+            <button class="book-cta" data-id="{{item.id}}" bindtap="openSkill" hover-class="is-pressed" aria-label="开始练习：{{item.title}}">
+              <text class="book-cta-label">开始练习</text>
+              <image class="book-cta-icon" src="{{assets.ctaArrow}}" mode="aspectFit"></image>
+            </button>
+          </view>
+        </view>
+      </view>
+
+      <!-- 快速入口（06） -->
+      <view class="section section-try">
+        <view class="try-head">
+          <image class="try-icon" src="{{assets.tryIcon}}" mode="aspectFit"></image>
+          <text class="try-title">你可能想试试</text>
+        </view>
+        <scroll-view class="chip-scroll" scroll-x enhanced show-scrollbar="{{false}}">
+          <view class="chip-row">
+            <view
+              class="chip"
+              wx:for="{{suggestions}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              bindtap="openTopic"
+              hover-class="is-pressed"
+              aria-label="{{item.label}}"
+            >
+              <image class="chip-icon" src="{{item.icon}}" mode="aspectFit"></image>
+              <text class="chip-label">{{item.label}}</text>
+              <image class="chip-arrow" src="{{assets.chipArrow}}" mode="aspectFit"></image>
+            </view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部固定：输入栏（07）+ 导航（08） -->
+  <view class="dock">
+    <view class="composer">
+      <image class="composer-icon" src="{{assets.composerIcon}}" mode="aspectFit"></image>
+      <input
+        class="composer-input"
+        value="{{draft}}"
+        placeholder="说说今晚的心情..."
+        placeholder-class="composer-placeholder"
+        confirm-type="send"
+        maxlength="200"
+        cursor-spacing="24"
+        bindinput="onDraftInput"
+        bindconfirm="onSend"
+      />
+      <button class="composer-send" bindtap="onSend" hover-class="is-pressed" aria-label="发送">
+        <image class="composer-send-icon" src="{{assets.sendIcon}}" mode="aspectFit"></image>
+      </button>
+    </view>
+    <night-tabbar active="home"></night-tabbar>
+  </view>
+</view>

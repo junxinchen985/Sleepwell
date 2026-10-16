@@ -1,5 +1,10 @@
 {
   "pages": [
+    "pages/home/index",
+    "pages/counselors/index",
+    "pages/skills/index",
+    "pages/skill-detail/index",
+    "pages/topic/index",
     "pages/agent/index",
     "pages/record/index",
     "pages/night-settings/index",

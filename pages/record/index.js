@@ -43,7 +43,7 @@ Page({
       } });
     } });
   },
-  goNight() { wx.reLaunch({ url: '/pages/agent/index' }); },
+  goNight() { wx.reLaunch({ url: '/pages/home/index' }); },
   goBreathe() { wx.reLaunch({ url: '/pages/breathe/index' }); },
   noop() {}
 });
