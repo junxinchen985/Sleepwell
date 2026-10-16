@@ -2,6 +2,57 @@
 
 一个打开即可互动的轻量放松小程序，现包含“夜喵”AI Agent 入口、呼吸练习和睡眠/感恩记录。用户第一次按住屏幕启动后，可完成 4 秒吸气、7 秒屏气和 8 秒呼气循环。
 
+## 2026-10-16 更新：四套沉浸式场景与页面替换
+
+本次新增四套独立沉浸式呼吸页面，并调整对应世界入口：
+
+| 原世界入口 | 新页面 | 路由 |
+| --- | --- | --- |
+| 萤火虫 | 深海萤火虫呼吸 | `/pages/breath-firefly/index` |
+| 湖面 | 云层呼吸 | `/pages/cloud/index` |
+| 呼吸光团 | 呼吸光团 | `/pages/breath-orb/index` |
+| 暖光 | 深海鲸鱼 | `/pages/whale/index` |
+
+### 控件说明
+
+- 四个新页面各自包含一个位于中下部的圆形金黄色开始/结束按钮。
+- 每个新页面只渲染一个开始/结束按钮，按钮只在当前页面内显示，不会跨页面悬浮。
+- 打开设置、场景选择或完成弹层时，按钮随当前页面隐藏。
+- 蒲公英、月光涟漪、薰衣草花海、星辰四个既有界面保持原样，不新增开始/结束按钮。
+
+### 启动方式
+
+在世界选择器中选择上述四个场景时，会跳转到对应页面并开始播放：
+
+```text
+/pages/breath-firefly/index?autostart=1
+/pages/cloud/index?autostart=1
+/pages/breath-orb/index?autostart=1
+/pages/whale/index?autostart=1
+```
+
+### 主要文件
+
+```text
+pages/breath-firefly/                 深海萤火虫
+pages/cloud/                          云层
+pages/breath-orb/                     呼吸光团
+pages/whale/                          深海鲸鱼
+components/immersive-chrome/          共享顶部与底部控件
+components/breathing-action-button/   金色开始/结束按钮
+utils/firefly-particles.js            萤火虫状态与粒子
+utils/cloud-breath.js                 云层 4-7-8 状态机
+utils/breath-orb-machine.js           呼吸光团状态机
+utils/whale-breath-machine.js         鲸鱼状态机
+utils/whale-breath-controller.js      鲸鱼页面控制器
+```
+
+### 验证
+
+- `node --test tests/*.test.js`：99 项通过。
+- 四个新增页面的背景、形象与动画参数保持不变。
+- 微信开发者工具需要重新编译后查看实际设备布局与点击区域。
+
 ## 已实现
 
 ### 薰衣草花海（替换原「月光」）
