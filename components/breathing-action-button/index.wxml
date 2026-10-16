@@ -1,0 +1,15 @@
+<view
+  class="breathing-action {{active ? 'is-active' : ''}}"
+  catchtouchstart="handleStart"
+  catchtouchend="handleEnd"
+  catchtouchcancel="handleCancel"
+  hover-class="is-pressed"
+  hover-start-time="0"
+  hover-stay-time="100"
+  aria-role="button"
+  aria-label="{{active ? '结束呼吸' : '开始呼吸'}}"
+>
+  <view class="breathing-action__halo"></view>
+  <view class="breathing-action__ring"></view>
+  <view class="breathing-action__core"></view>
+</view>

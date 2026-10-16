@@ -1,0 +1,69 @@
+:host {
+  display: block;
+  width: 152rpx;
+  height: 152rpx;
+}
+
+.breathing-action {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 152rpx;
+  height: 152rpx;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition: transform 160ms ease, opacity 160ms ease;
+  will-change: transform, opacity;
+}
+
+.breathing-action.is-pressed {
+  transform: translate3d(0, 0, 0) scale(0.94);
+}
+
+.breathing-action__halo,
+.breathing-action__ring,
+.breathing-action__core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  pointer-events: none;
+}
+
+.breathing-action__halo {
+  width: 152rpx;
+  height: 152rpx;
+  background: radial-gradient(circle, rgba(238, 215, 158, 0.2) 0%, rgba(203, 168, 103, 0.08) 52%, rgba(174, 137, 72, 0) 78%);
+}
+
+.breathing-action__ring {
+  box-sizing: border-box;
+  width: 112rpx;
+  height: 112rpx;
+  border: 2rpx solid rgba(224, 194, 132, 0.78);
+  background: radial-gradient(circle, rgba(171, 141, 85, 0.34) 0%, rgba(132, 106, 61, 0.24) 64%, rgba(91, 70, 37, 0.14) 100%);
+  box-shadow:
+    0 0 26rpx rgba(225, 191, 123, 0.2),
+    inset 0 0 18rpx rgba(245, 219, 164, 0.12);
+}
+
+.breathing-action__core {
+  width: 62rpx;
+  height: 62rpx;
+  background: radial-gradient(circle at 42% 34%, #f0dba8 0%, #dfc181 38%, #cbaa70 68%, #b28d58 100%);
+  box-shadow:
+    0 0 18rpx rgba(244, 216, 153, 0.34),
+    inset 0 2rpx 7rpx rgba(255, 247, 221, 0.48);
+}
+
+.breathing-action.is-active .breathing-action__ring {
+  border-color: rgba(240, 211, 145, 0.92);
+  box-shadow:
+    0 0 36rpx rgba(232, 195, 116, 0.32),
+    inset 0 0 22rpx rgba(255, 230, 174, 0.18);
+}
+
+.breathing-action.is-active .breathing-action__core {
+  background: radial-gradient(circle at 42% 34%, #fff0c7 0%, #ebcd91 42%, #d3ae70 72%, #b98f58 100%);
+}
