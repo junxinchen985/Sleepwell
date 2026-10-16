@@ -10,9 +10,7 @@
   },
   "usingComponents": {
     "world-visual": "/components/world-visual/index",
-    "lavender-scene": "/components/lavender-scene/index",
-    "immersive-chrome": "/components/immersive-chrome/index",
-    "breathing-action-button": "/components/breathing-action-button/index"
+    "lavender-scene": "/components/lavender-scene/index"
   },
   "disableScroll": true
 }

@@ -4,14 +4,6 @@
   transition: background-color 800ms ease;
 }
 
-.breathing-control-anchor {
-  position: absolute;
-  z-index: 105;
-  bottom: calc(env(safe-area-inset-bottom) + 320rpx);
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .world-bg--mist { --world-accent: #c9ded9; }
 .moonlit-page-background { position: absolute; z-index: 0; top: 0; bottom: 0; left: 0; width: 100%; overflow: hidden; pointer-events: none; }
 .world-bg--mist .touch-ring { display: none; }
