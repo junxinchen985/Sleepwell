@@ -1,4 +1,5 @@
 page { background: #031819; }
+.record-page .month-current { display: none !important; }
 .record-page { height: 100vh; overflow: hidden; color: #f3f1e7; background: #031819; font-family: -apple-system, 'Microsoft YaHei', sans-serif; letter-spacing: 0; }
 .record-page button { margin: 0; padding: 0; background: transparent; color: inherit; border-radius: 0; line-height: 1.4; font-size: 14px; }
 .record-page button::after { border: 0; }
@@ -16,7 +17,6 @@ page { background: #031819; }
 .month-arrow image { width: 20px; height: 20px; }
 .arrow-left { transform: rotate(180deg); }
 .month-label { flex: 1; text-align: center; font-family: SimSun, serif; font-size: 17px; }
-.month-nav .month-current { min-width: 40px; height: 44px; color: #ebc979; font-size: 12px; }
 .calendar-row { display: flex; justify-content: space-between; margin-bottom: 12rpx; }
 .weekdays { color: #a8b9b6; font-size: 12px; line-height: 32px; }
 .weekdays text,.day-slot { width: 14.2857%; text-align: center; }
@@ -38,7 +38,7 @@ page { background: #031819; }
 .weekly-title { font-size: 17px; line-height: 34px; }.gold-number { color: #ebc979; font-size: 27px; font-family: SimSun, serif; }.weekly-empty { font-size: 16px; line-height: 30px; }
 .journal-heading { display: flex; align-items: center; justify-content: space-between; gap: 12rpx; }.journal-heading > view { flex: 1; min-width: 0; }
 .section-title { display: block; font-family: 'Songti SC', SimSun, serif; font-size: 22px; line-height: 1.6; }
-.record-page .all-button { display: flex; align-items: center; justify-content: center; min-width: 112rpx; height: 44px; font-size: 12px; border: 1px solid #395250; border-radius: 34rpx; }.all-button image { width: 16px; height: 16px; }
+.record-page .all-button { display: flex; flex: 0 0 112rpx; align-items: center; justify-content: center; width: 112rpx !important; min-width: 112rpx; max-width: 112rpx; height: 44px; padding: 0; font-size: 12px; border: 1px solid #395250; border-radius: 34rpx; }.all-button image { width: 16px; height: 16px; }
 .record-page .journal-entry { width: 100%; min-height: 200rpx; text-align: left; }.entry-copy { position: relative; flex: 1; min-width: 0; }.entry-title { display: block; font-size: 19px; font-family: SimSun, serif; line-height: 1.6; }
 .entry-arrow { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; width: 80rpx; height: 80rpx; border-radius: 50%; background: #ebc979; }.entry-arrow image { width: 20px; height: 20px; }
 .journal-row { display: flex; align-items: center; gap: 16rpx; height: 188rpx; padding: 20rpx 12rpx 20rpx 24rpx; border: 1px solid #395250; border-radius: 32rpx; background: #0b2525; }
@@ -49,5 +49,12 @@ page { background: #031819; }
 .record-note,.empty-journal { display: block; color: #a8b9b6; font-size: 12px; line-height: 1.8; white-space: pre-line; }.empty-journal { padding: 24rpx 0; text-align: center; font-size: 14px; }
 .record-nav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 10; display: flex; padding: 0 24rpx env(safe-area-inset-bottom); border-top: 1px solid #395250; background: #031819; }
 .record-nav button { flex: 1; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 6rpx; height: 132rpx; color: #a8b9b6; font-size: 12px; }.record-nav image { width: 48rpx; height: 48rpx; }.record-nav .is-active { color: #ebc979; }.active-line { width: 48rpx; height: 4rpx; background: #ebc979; border-radius: 2rpx; }
-.journal-all { position: fixed; inset: 0; z-index: 20; background: #031819; display: flex; flex-direction: column; }.all-heading { display: flex; justify-content: space-between; align-items: center; padding: 0 24rpx; }.all-heading button { min-width: 44px; height: 44px; color: #ebc979; }.all-heading image { width: 20px; height: 20px; }.all-scroll { height: 0; flex: 1; padding: 24rpx 32rpx calc(32rpx + env(safe-area-inset-bottom)); }.all-scroll .journal-row { margin-bottom: 24rpx; }
+.journal-all { position: fixed; inset: 0; z-index: 20; background: #031819; display: flex; flex-direction: column; }
+.all-heading { position: relative; flex: 0 0 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; }
+.all-heading button { display: flex; align-items: center; justify-content: center; min-width: 44px; width: 44px; height: 44px; margin: 0; padding: 0; color: #ebc979; }
+.all-heading button:first-child { color: #a8b9b6; }
+.all-heading image { width: 20px; height: 20px; }
+.all-heading .section-title { position: absolute; left: 50%; top: 50%; width: max-content; max-width: calc(100% - 176px); transform: translate(-50%, -50%); color: #f3f1e7; font-size: 22px; line-height: 1; white-space: nowrap; }
+.all-heading button:last-child { width: auto; min-width: 56px; font-size: 14px; white-space: nowrap; }
+.all-scroll { height: 0; flex: 1; padding: 24rpx 32rpx calc(32rpx + env(safe-area-inset-bottom)); }.all-scroll .journal-row { margin-bottom: 24rpx; }
 .detail-mask { position: fixed; inset: 0; z-index: 30; display: flex; align-items: flex-end; background: rgba(0,9,10,.7); }.detail-sheet { width: 100%; padding: 32rpx 32rpx calc(40rpx + env(safe-area-inset-bottom)); border-radius: 36rpx 36rpx 0 0; background: #0b2525; border-top: 1px solid #395250; }.detail-heading { display: flex; align-items: center; justify-content: space-between; }.detail-heading button { width: 44px; height: 44px; }.detail-heading image { width: 20px; height: 20px; }.detail-scroll { max-height: 60vh; }.detail-date,.detail-main,.journal-full { display: block; margin: 24rpx 0; font-size: 16px; line-height: 1.8; word-break: break-all; white-space: pre-wrap; }.record-page .edit-button { width: 100%; margin-top: 24rpx; min-height: 44px; background: #ebc979; color: #24312c; border-radius: 24rpx; }

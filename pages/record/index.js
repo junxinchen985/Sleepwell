@@ -16,7 +16,6 @@ Page({
     this.setData({ nav: getNavigationMetrics(), monthLabel: `${this.data.year} 年 ${this.data.month + 1} 月`, rows: sleep.calendar(this.data.year, this.data.month, records, this.data.selected), weekly, journals, legacyCount: records.filter((item) => !sleep.parseDate(item.nightDate)).length, weekCopy: weekly.difference > 0 ? `比上周多 ${weekly.difference} 天，继续保持呀！` : weekly.difference < 0 ? '今晚慢慢来，每一天都是新的开始。' : '和上周一样，继续照顾好自己。' });
   },
   changeMonth(event) { const date = new Date(this.data.year, this.data.month + Number(event.currentTarget.dataset.offset), 1); this.setData({ year: date.getFullYear(), month: date.getMonth(), selected: '', detail: null }); this.refresh(); },
-  currentMonth() { this.onLoad(); this.setData({ selected: '', detail: null }); this.refresh(); },
   chooseDate(event) {
     const key = event.currentTarget.dataset.key;
     if (!sleep.parseDate(key)) return;
@@ -43,7 +42,7 @@ Page({
       } });
     } });
   },
-  goNight() { wx.reLaunch({ url: '/pages/home/index' }); },
+  goNight() { wx.reLaunch({ url: '/pages/agent/index' }); },
   goBreathe() { wx.reLaunch({ url: '/pages/breathe/index' }); },
   noop() {}
 });

@@ -21,18 +21,11 @@
           <image class="brand-crescent" src="{{assets.crescent}}" mode="aspectFit"></image>
         </view>
         <view class="brand-slogan-row">
-          <text class="brand-slogan">陪你安心度过每个夜晚</text>
-          <button class="brand-settings" bindtap="openSettings" hover-class="is-pressed" aria-label="夜间设置">
-            <image class="brand-settings-icon" src="{{assets.settings}}" mode="aspectFit"></image>
-          </button>
+          <text class="brand-slogan">陪你安心度过每一个夜晚</text>
           <view class="brand-flourish">
             <image class="brand-flourish-line" src="{{assets.flourish}}" mode="aspectFit"></image>
             <image class="brand-flourish-star" src="{{assets.sparkle}}" mode="aspectFit"></image>
           </view>
-        </view>
-        <view class="brand-intro">
-          <text>无论今天多么疲惫，</text>
-          <text>这里都有温柔的陪伴。</text>
         </view>
       </view>
 
