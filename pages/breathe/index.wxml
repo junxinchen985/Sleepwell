@@ -78,23 +78,32 @@
     ></view>
     <text wx:if="{{cycles > 0}}" class="cycle-count">{{cycles}}</text>
   </view>
-  <immersive-chrome
-    show-top="{{false}}"
-    show-bottom="{{!showSettings && !showWorldPicker && !showCompletion && !showBodyNudge}}"
-    custom-events="{{true}}"
-    bind:body="goBody"
-    bind:world="openWorldPicker"
-    bind:records="openRecords"
-  ></immersive-chrome>
+  <button wx:if="{{phase !== 'idle' && phase !== 'completed'}}" class="stop-breath" bindtap="stopBreathing" aria-label="停止呼吸">停止</button>
 
-  <view
-    wx:if="{{!showSettings && !showWorldPicker && !showCompletion && !showBodyNudge}}"
-    class="breathing-control-anchor"
-  >
-    <breathing-action-button
-      active="{{phase !== 'idle' && phase !== 'completed'}}"
-      bind:toggle="handleBreathingControl"
-    ></breathing-action-button>
+  <view class="bottom-nav safe-bottom">
+    <button class="nav-item" bindtap="goAgent">
+      <image class="nav-icon" src="/assets/agent/icons/cat-muted.png" aria-hidden="true"></image>
+      <text>夜喵</text>
+    </button>
+    <button class="nav-item nav-item--world is-selected" bindtap="openWorldPicker" aria-label="切换呼吸世界">
+      <view class="nav-icon world-nav-icon" aria-hidden="true">
+        <view class="world-nav-icon__core"></view>
+        <view class="world-nav-icon__ray world-nav-icon__ray--top"></view>
+        <view class="world-nav-icon__ray world-nav-icon__ray--right"></view>
+        <view class="world-nav-icon__ray world-nav-icon__ray--bottom"></view>
+        <view class="world-nav-icon__ray world-nav-icon__ray--left"></view>
+      </view>
+      <view class="nav-active-indicator" aria-hidden="true"></view>
+      <text>呼吸世界</text>
+    </button>
+    <button class="nav-item" bindtap="openRecords">
+      <view class="nav-icon record-nav-icon" aria-hidden="true">
+        <view class="record-nav-icon__sheet"></view>
+        <view class="record-nav-icon__line record-nav-icon__line--one"></view>
+        <view class="record-nav-icon__line record-nav-icon__line--two"></view>
+      </view>
+      <text>记录</text>
+    </button>
   </view>
 
   <view class="body-nudge {{showBodyNudge ? 'is-visible' : ''}}">
