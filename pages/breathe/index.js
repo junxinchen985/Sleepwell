@@ -275,6 +275,9 @@ Page({
     const currentWorld = WORLDS.find((item) => item.id === world) || WORLDS[0];
     this.setData({ settings, currentWorld, showWorldPicker: false, previewWorld: '' });
     this.gentleHaptic();
+    if (currentWorld.page) {
+      wx.navigateTo({ url: `${currentWorld.page}?autostart=1` });
+    }
   },
 
   onRhythmChange(event) {
